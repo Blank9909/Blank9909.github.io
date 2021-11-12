@@ -168,6 +168,151 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Shell" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/29/Shell/">Shell</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/29/Shell/" class="archive-article-date">
+  	<time datetime="2021-10-29T01:10:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>CentOS环境变量配置；<br>CentOS三种软件安装方式(rpm/tar/yum)；修改yum源；文本基本处理（cut/sort/wc）;文本操作软件grep/sed/awk；Kernel与Shell；Shell执行命令；Shell语法；Linux系统启动；脚本开机启动；定时任务；编写初始化脚本；</p>
+<p>1、CentOS环境变量<br>2、CentOS软件安装方式（rpm/tar/yum)<br>3、使用不同方式安装jdk8、Tomcat8、MySQL7/8数据库<br>4、文本普通操作命令：cut、sort、wc<br>5、文本操作三剑客：grep、sed、awk<br>6、Linux操作系统内核（Kernel）<br>7、Shell发展历史<br>8、Shell编程<br>9、Linux启动流程与软件开机启动<br>10、Linux定时任务<br>11、编写init.sh系统初始化软件安装脚本并执行<br>12、搭建node01/node02/node03三台服务器并相互免秘钥</p>
+<h2 id="重点知识点掌握"><a href="#重点知识点掌握" class="headerlink" title="重点知识点掌握"></a>重点知识点掌握</h2><h3 id="CentOS环境变量-64"><a href="#CentOS环境变量-64" class="headerlink" title="CentOS环境变量 - 64"></a>CentOS环境变量 - 64</h3><p>source /etc/profile</p>
+<h3 id="CentOS软件安装方式（rpm-tar-yum-65"><a href="#CentOS软件安装方式（rpm-tar-yum-65" class="headerlink" title="CentOS软件安装方式（rpm/tar/yum) - 65"></a>CentOS软件安装方式（rpm/tar/yum) - 65</h3><p>rpm -ivh jdk-7u67-linux-x64.rpm</p>
+<p>yum install wget -y</p>
+<h3 id="使用不同方式安装jdk8、Tomcat8、MySQL8数据库-66-69"><a href="#使用不同方式安装jdk8、Tomcat8、MySQL8数据库-66-69" class="headerlink" title="使用不同方式安装jdk8、Tomcat8、MySQL8数据库 -66-69"></a>使用不同方式安装jdk8、Tomcat8、MySQL8数据库 -66-69</h3><h3 id="文本操作三剑客之grep-71"><a href="#文本操作三剑客之grep-71" class="headerlink" title="文本操作三剑客之grep    71"></a>文本操作三剑客之grep    71</h3><h3 id="Linux启动流程与软件开机启动-05"><a href="#Linux启动流程与软件开机启动-05" class="headerlink" title="Linux启动流程与软件开机启动 - 05"></a>Linux启动流程与软件开机启动 - 05</h3><h3 id="Linux定时任务-07"><a href="#Linux定时任务-07" class="headerlink" title="Linux定时任务 - 07"></a>Linux定时任务 - 07</h3><h3 id="编写init-sh系统初始化软件安装脚本并执行-08-09"><a href="#编写init-sh系统初始化软件安装脚本并执行-08-09" class="headerlink" title="编写init.sh系统初始化软件安装脚本并执行 - 08/09"></a>编写init.sh系统初始化软件安装脚本并执行 - 08/09</h3><h3 id="搭建node01-node02-node03三台服务器并相互免秘钥-10"><a href="#搭建node01-node02-node03三台服务器并相互免秘钥-10" class="headerlink" title="搭建node01/node02/node03三台服务器并相互免秘钥 - 10"></a>搭建node01/node02/node03三台服务器并相互免秘钥 - 10</h3><h2 id="知识点了解"><a href="#知识点了解" class="headerlink" title="知识点了解"></a>知识点了解</h2><h3 id="1、文本普通操作命令：cut、sort、wc-70"><a href="#1、文本普通操作命令：cut、sort、wc-70" class="headerlink" title="1、文本普通操作命令：cut、sort、wc - 70"></a>1、文本普通操作命令：cut、sort、wc - 70</h3><h3 id="文本操作三剑客：sed、awk-71"><a href="#文本操作三剑客：sed、awk-71" class="headerlink" title="文本操作三剑客：sed、awk - 71"></a>文本操作三剑客：sed、awk - 71</h3><h3 id="Linux操作系统内核（Kernel）-01"><a href="#Linux操作系统内核（Kernel）-01" class="headerlink" title="Linux操作系统内核（Kernel）- 01"></a>Linux操作系统内核（Kernel）- 01</h3><h3 id="Shell发展历史-01"><a href="#Shell发展历史-01" class="headerlink" title="Shell发展历史 - 01"></a>Shell发展历史 - 01</h3><h3 id="Shell编程-03-05"><a href="#Shell编程-03-05" class="headerlink" title="Shell编程 03-05"></a>Shell编程 03-05</h3><h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>centos和蝶变：一个用于与服务器，一个用于图形化界面</p>
+<h2 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h2><h3 id="编写一个初始化脚本init-sh并执行完毕"><a href="#编写一个初始化脚本init-sh并执行完毕" class="headerlink" title="编写一个初始化脚本init.sh并执行完毕"></a>编写一个初始化脚本init.sh并执行完毕</h3><h3 id="搭建node01-node02-node03三台服务器并相互免秘钥"><a href="#搭建node01-node02-node03三台服务器并相互免秘钥" class="headerlink" title="搭建node01/node02/node03三台服务器并相互免秘钥"></a>搭建node01/node02/node03三台服务器并相互免秘钥</h3>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/29/Shell/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Linux-03" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/28/Linux-03/">Linux-03</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/28/Linux-03/" class="archive-article-date">
+  	<time datetime="2021-10-28T00:25:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>swap分区；主机（host）与主机名（hostname）；<br>主机域名（hosts）；网络指令（ifconfig/netstat/ping/telnet/curl）;firewalld防火墙；加密算法（不可逆加密；对称加密与非对称加密）；主机免秘钥与known_hosts；免秘钥原理；配置面host校验；date与ntpdate操作；用户与用户权限；管道与重定向；Linux进程操作</p>
+<p>1、swap区工作原理<br>        2、host与hostname<br>        3、网络命令：ifconfig/ping/telnet/netstat/curl<br>        4、防火墙操作<br>        5、加密算法<br>        6、设置免密登录与免密登录流程<br>        7、时间同步问题<br>        8、Linux权限管理<br>        9、管道与重定向<br>        10、系统进程知识与操作</p>
+        
+          <a class="article-more-a" href="/2021/10/28/Linux-03/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/28/Linux-03/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-网络的七层架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -833,85 +978,9 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/20/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/20/hello-world/" class="archive-article-date">
-  	<time datetime="2021-10-20T11:05:52.098Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-        
-          <a class="article-more-a" href="/2021/10/20/hello-world/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/other//" class="article-tag-list-link color1">other</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/20/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 
