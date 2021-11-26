@@ -168,6 +168,496 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-kafka分享" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/26/kafka%E5%88%86%E4%BA%AB/">kafka分享</a>
+    </h1>
+  
+
+        
+        <a href="/2021/11/26/kafka%E5%88%86%E4%BA%AB/" class="archive-article-date">
+  	<time datetime="2021-11-26T06:51:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>kafka或者消息中间件是基于异步通信原理和消息系统原理这两个理论知识设计出来的，所以再讲kafka之前先讲一讲这两个原理</p>
+<h2 id="异步通信原理"><a href="#异步通信原理" class="headerlink" title="异步通信原理"></a>异步通信原理</h2><h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>观察者模式（Observer），又叫发布-订阅模式（Publish/Subscribe）<br>定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。<br>一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知。</p>
+<p>在淘宝或京东上买东西，</p>
+<h3 id="生产者消费者模式"><a href="#生产者消费者模式" class="headerlink" title="生产者消费者模式"></a>生产者消费者模式</h3><p>传统模式<br>    生产者直接将消息传递给指定的消费者<br>    耦合性特别高，当生产者或者消费者发生变化，都需要重写业务逻辑<br>生产者消费者模式<br>    通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通讯，而通过阻塞队列来进行通讯</p>
+<p><img src="../images/kafka%E5%88%86%E4%BA%AB/image-20211126153310715.png" alt="image-20211126153310715"></p>
+<p>数据传递流程<br>    生产者消费者模式，即N个线程进行生产，同时N个线程进行消费，两种角色通过内存缓冲区进行通信，<br>    生产者负责向缓冲区里面添加数据单元<br>    消费者负责从缓冲区里面取出数据单元<br>        一般遵循先进先出的原则</p>
+<p>去超市买东西</p>
+<h3 id="缓冲区"><a href="#缓冲区" class="headerlink" title="缓冲区"></a>缓冲区</h3><p>解耦<br>    假设生产者和消费者分别是两个类。如果让生产者直接调用消费者的某个方法，那么生产者对于消费者就会产生依赖<br>支持并发<br>    生产者直接调用消费者的某个方法过程中函数调用是同步的<br>    万一消费者处理数据很慢，生产者就会白白糟蹋大好时光<br>支持忙闲不均<br>    缓冲区还有另一个好处。如果制造数据的速度时快时慢，缓冲区的好处就体现出来了。<br>    当数据制造快的时候，消费者来不及处理，未处理的数据可以暂时存在缓冲区中。<br>    等生产者的制造速度慢下来，消费者再慢慢处理掉。</p>
+<h3 id="数据单元"><a href="#数据单元" class="headerlink" title="数据单元"></a>数据单元</h3><p>关联到业务对象<br>    数据单元必须关联到某种业务对象<br>完整性<br>    就是在传输过程中，要保证该数据单元的完整<br>独立性<br>    就是各个数据单元之间没有互相依赖<br>    某个数据单元传输失败不应该影响已经完成传输的单元；也不应该影响尚未传输的单元。<br>颗粒度<br>    数据单元需要关联到某种业务对象。那么数据单元和业务对象应该处于的关系（一对一？一对多）<br>    如果颗粒度过小会增加数据传输的次数<br>    如果颗粒度过大会增加单个数据传输的时间，影响后期消费</p>
+<h2 id="消息系统原理"><a href="#消息系统原理" class="headerlink" title="消息系统原理"></a>消息系统原理</h2><p>一个消息系统负责将数据从一个应用传递到另外一个应用，应用只需关注于数据，无需关注数据在两个或多个应用间是如何传递的。</p>
+<h3 id="点对点消息传递"><a href="#点对点消息传递" class="headerlink" title="点对点消息传递"></a>点对点消息传递</h3><p>​    在点对点消息系统中，消息持久化到一个队列中。此时，将有一个或多个消费者消费队列中的数据。但是一条消息只能被消费一次。<br>​    当一个消费者消费了队列中的某条数据之后，该条数据则从消息队列中删除。<br>​    该模式即使有多个消费者同时消费数据，也能保证数据处理的顺序。<br>​    基于推送模型的消息系统，由消息代理记录消费状态。<br>​        消息代理将消息推送(push)到消费者后，标记这条消息为已经被消费，但是这种方式无法很好地保证消费的处理语义。</p>
+<p><img src="../images/kafka%E5%88%86%E4%BA%AB/image-20211126155037459.png" alt="image-20211126155037459"></p>
+<h3 id="发布订阅消息传递"><a href="#发布订阅消息传递" class="headerlink" title="发布订阅消息传递"></a>发布订阅消息传递</h3><p>​    在发布-订阅消息系统中，消息被持久化到一个topic中。<br>​    消费者可以订阅一个或多个topic，消费者可以消费该topic中所有的数据，同一条数据可以被多个消费者消费，数据被消费后不会立马删除。<br>​    在发布-订阅消息系统中，消息的生产者称为发布者，消费者称为订阅者。<br>​    Kafka 采取拉取模型(Poll)，由自己控制消费速度，消费者可以按照任意的偏移量进行消费。</p>
+<p><img src="../images/kafka%E5%88%86%E4%BA%AB/image-20211126155228883.png" alt="image-20211126155228883"></p>
+<h2 id="Kafka简介"><a href="#Kafka简介" class="headerlink" title="Kafka简介"></a>Kafka简介</h2><p>Kafka是一个开源流处理平台，由Scala和Java编写。Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者在网站中的所有动作流数据。kafka本质上是一个消息队列</p>
+<h3 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h3><p>​    以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间的访问性能。<br>​    高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条消息的传输。<br>​    支持Kafka Server间的消息分区，及分布式消费，同时保证每个partition内的消息顺序传输。<br>​    同时支持离线数据处理和实时数据处理。<br>​    支持在线水平扩展</p>
+<h3 id="Kafka的优点，同时也可以说是使用消息队列的好处"><a href="#Kafka的优点，同时也可以说是使用消息队列的好处" class="headerlink" title="Kafka的优点，同时也可以说是使用消息队列的好处"></a>Kafka的优点，同时也可以说是使用消息队列的好处</h3><p>解耦：<br>    这允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。在项目启动之初来预测将来项目会碰到什么需求，是极其困难的。消息系统在处理过程中间插入了一个隐含的、基于数据的接口层，两边的处理过程都要实现这一接口。<br>冗余<br>    有些情况下，处理数据的过程会失败。除非数据被持久化，否则将造成丢失。消息队列把数据进行持久化直到它们已经被完全处理，通过这一方式规避了数据丢失风险。许多消息队列所采用的”插入-获取-删除”范式中，在把一个消息从队列中删除之前，需要你的处理系统明确的指出该消息已经被处理完毕，从而确保你的数据被安全的保存直到你使用完毕。<br>扩展性<br>    因为消息队列解耦了你的处理过程，所以增大消息入队和处理的频率是很容易的，只要另外增加处理过程即可。不需要改变代码、不需要调节参数。扩展就像调大电力按钮一样简单。<br>灵活性&amp;峰值处理能力<br>    使用消息队列能够使关键组件顶住突发的访问压力，而不会因为突发的超负荷的请求而完全崩溃。在访问量剧增的情况下，应用仍然需要继续发挥作用，但是这样的突发流量并不常见；如果为以能处理这类峰值访问为标准来投入资源随时待命无疑是巨大的浪费。<br>可恢复性<br>    系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个处理消息的进程挂掉，加入队列中的消息仍然可以在系统恢复后被处理。<br>顺序保证<br>    在大多使用场景下，数据处理的顺序都很重要。大部分消息队列本来就是排序的，并且能保证数据会按照特定的顺序来处理。Kafka保证一个Partition内的消息的有序性。<br>缓冲<br>    有助于解决生产消息和消费消息的处理速度不一致的情况。在任何重要的系统中，都会有需要不同的处理时间的元素。例如，加载一张图片比应用过滤器花费更少的时间。消息队列通过一个缓冲层来帮助任务最高效率的执行——写入队列的处理会尽可能的快速。该缓冲有助于控制和优化数据流经过系统的速度。<br>异步通信<br>    消息队列提供了异步处理机制，允许用户把一个消息放入队列，但并不立即处理它。很多时候，用户不想也不需要立即处理消息。想向队列中放入多少消息就放多少，然后在需要的时候再去处理它们。</p>
+<h2 id="Kafka系统架构"><a href="#Kafka系统架构" class="headerlink" title="Kafka系统架构"></a>Kafka系统架构</h2><h3 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h3><p>Kafka 集群包含一个或多个服务器，服务器节点称为broker。</p>
+<h3 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h3><p>每条发布到Kafka集群的消息都有一个类别，这个类别被称为Topic。<br>类似于数据库的table或者ES的Index<br>物理上不同Topic的消息分开存储<br>逻辑上一个Topic的消息虽然保存于一个或多个broker上但用户只需指定消息的Topic即可生产或消费数据而不必关心数据存于何处）</p>
+<p>创建流程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.controller在ZooKeeper的/brokers/topics节点上注册watcher，当topic被创建，则</span><br><span class="line">controller会通过watch得到该topic的partition/replica分配。</span><br><span class="line">2.controller从/brokers/ids读取当前所有可用的broker列表，对于set_p中的每一个</span><br><span class="line">partition：</span><br><span class="line">2.1从分配给该partition的所有replica（称为AR）中任选一个可用的broker作为新的</span><br><span class="line">leader，并将AR设置为新的ISR</span><br><span class="line">2.2将新的leader和ISR写</span><br><span class="line">入/brokers/topics/[topic]/partitions/[partition]/state</span><br><span class="line">3.controller通过RPC向相关的broker发送LeaderAndISRRequest</span><br></pre></td></tr></table></figure>
+
+<p>删除流程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.controller在zooKeeper的/brokers/topics节点上注册watcher，当topic被删除，则</span><br><span class="line">controller会通过watch得到该topic的partition/replica分配。</span><br><span class="line">2.若delete.topic.enable=false，结束；否则controller注册在/admin/delete_topics上</span><br><span class="line">的watch被fire，controller通过回调向对应的broker发送StopReplicaRequest。</span><br></pre></td></tr></table></figure>
+
+<h3 id="Partition"><a href="#Partition" class="headerlink" title="Partition"></a>Partition</h3><p>topic中的数据分割为一个或多个partition。<br>每个topic至少有一个partition,当生产者产生数据的时候，根据分配策略,选择分区,然后将消息追到指定的分区的末尾（队列）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## Partation数据路由规则</span><br><span class="line">1. 指定了 patition，则直接使用；</span><br><span class="line">2. 未指定 patition 但指定 key，通过对 key 的 value 进行hash 选出一个 patition</span><br><span class="line">3. patition 和 key 都未指定，使用轮询选出一个 patition。</span><br></pre></td></tr></table></figure>
+
+<p>每条消息都会有一个自增的编号<br>    标识顺序<br>    用于标识消息的偏移量<br>    每个Partition都有自己独立的编号<br>每个partition中的数据使用多个segment文件存储。<br>partition中的数据是有序的，不同partition间的数据丢失了数据的顺序。<br>如果topic有多个partition，消费数据时就不能保证数据的顺序。严格保证消息的消费顺序的场景下，需要将partition数目设为1。</p>
+<h3 id="Leader"><a href="#Leader" class="headerlink" title="Leader"></a>Leader</h3><p>每个partition有多个副本，其中有且仅有一个作为Leader，Leader是当前负责数据的读写的partition。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. producer 先从 zookeeper 的 &quot;/brokers/.../state&quot; 节点找到该 partition 的leader</span><br><span class="line">2. producer 将消息发送给该 leader</span><br><span class="line">3. leader 将消息写入本地 log</span><br><span class="line">4. followers 从 leader pull 消息，写入本地 log 后 leader 发送 ACK</span><br><span class="line">5. leader 收到所有 ISR 中的 replica 的 ACK 后，增加 HW（high watermark，最后commit 的 offset） 并向 producer 发送 ACK</span><br></pre></td></tr></table></figure>
+
+<h3 id="Follower"><a href="#Follower" class="headerlink" title="Follower"></a>Follower</h3><p>Follower跟随Leader，所有写请求都通过Leader路由，数据变更会广播给所有Follower，Follower与Leader保持数据同步。<br>如果Leader失效，则从Follower中选举出一个新的Leader。<br>当Follower挂掉、卡住或者同步太慢，leader会把这个follower从“in sync replicas”（ISR）列表中删除，重新创建一个Follower。</p>
+<h3 id="replication"><a href="#replication" class="headerlink" title="replication"></a>replication</h3><p>数据会存放到topic的partation中，但是有可能分区会损坏<br>我们需要对分区的数据进行备份（备份多少取决于你对数据的重视程度）<br>我们将分区的分为Leader(1)和Follower(N)<br>    Leader负责写入和读取数据<br>    Follower只负责备份<br>    保证了数据的一致性<br>备份数设置为N，表示主+备=N(参考HDFS)</p>
+<h3 id="producer"><a href="#producer" class="headerlink" title="producer"></a>producer</h3><p>生产者即数据的发布者，该角色将消息发布到Kafka的topic中。<br>broker接收到生产者发送的消息后，broker将该消息追加到当前用于追加数据的segment文件中。<br>生产者发送的消息，存储到一个partition中，生产者也可以指定数据存储的partition。</p>
+<h3 id="consumer"><a href="#consumer" class="headerlink" title="consumer"></a>consumer</h3><p>消费者可以从broker中读取数据。消费者可以消费多个topic中的数据。<br>kafka 提供了两套 consumer API：<br>high-level consumer API 提供了一个从 kafka 消费数据的高层抽象，而 SimpleConsumer API 则需要开发人员更多地关注细节。</p>
+<h3 id="Consumer-Group"><a href="#Consumer-Group" class="headerlink" title="Consumer Group"></a>Consumer Group</h3><p>每个Consumer属于一个特定的Consumer Group（可为每个Consumer指定group name，若不指定group name则属于默认的group）。<br>将多个消费者集中到一起去处理某一个Topic的数据，可以更快的提高数据的消费能力<br>整个消费者组共享一组偏移量(防止数据被重复读取)，因为一个Topic有多个分区</p>
+<h3 id="offset偏移量"><a href="#offset偏移量" class="headerlink" title="offset偏移量"></a>offset偏移量</h3><p>可以唯一的标识一条消息<br>偏移量决定读取数据的位置，不会有线程安全的问题，消费者通过偏移量来决定下次读取的消息<br>消息被消费之后，并不被马上删除，这样多个业务就可以重复使用kafka的消息<br>我们某一个业务也可以通过修改偏移量达到重新读取消息的目的,偏移量由用户控制<br>消息最终还是会被删除的，默认生命周期为1周（7*24小时）</p>
+<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h3><p>kafka 通过 zookeeper 来存储集群的 meta 信息</p>
+<h2 id="Kafka数据存储"><a href="#Kafka数据存储" class="headerlink" title="Kafka数据存储"></a>Kafka数据存储</h2><p>1.topic在物理层面以partition为分组，一个topic可以分成若干个partition</p>
+<p>2.partition还可以细分为Segment，一个partition物理上由多个Segment组成</p>
+<p>​    segment 的参数有两个：<br>​        log.segment.bytes：单个segment可容纳的最大数据量，默认为1GB<br>​        log.segment.ms：Kafka在commit一个未写满的segment前，所等待的时间（默认为7天）</p>
+<p>LogSegment 文件由两部分组成，分别为“.index”文件和“.log”文件，分别表示为 Segment 索引文件和数据文件。<br>    partition全局的第一个segment从0开始，后续每个segment文件名为上一个segment文件最后一条消息的offset值<br>    数值大小为64位，20位数字字符长度，没有数字用0填充</p>
+<h2 id="生产者数据安全"><a href="#生产者数据安全" class="headerlink" title="生产者数据安全"></a>生产者数据安全</h2><h3 id="数据分区"><a href="#数据分区" class="headerlink" title="数据分区"></a>数据分区</h3><p>分区原因<br>    方便在集群中扩展，每个 Partition 可以通过调整以适应它所在的机器，<br>    一个 Topic 又可以有多个 Partition 组成，因此可以以 Partition 为单位读写了。<br>    可以提高并发，因此可以以 Partition 为单位读写了。<br>分区原则<br>    将 Producer 发送的数据封装成一个 ProducerRecord 对象。对象包含：<br>        topic：string 类型，NotNull。<br>        partition：int 类型，可选。<br>        timestamp：long 类型，可选。<br>        key：string 类型，可选。<br>        value：string 类型，可选。<br>        headers：array 类型，Nullable。</p>
+<h3 id="数据可靠性保证"><a href="#数据可靠性保证" class="headerlink" title="数据可靠性保证"></a>数据可靠性保证</h3><h4 id="ACK机制"><a href="#ACK机制" class="headerlink" title="ACK机制"></a>ACK机制</h4><p>为保证 Producer 发送的数据，能可靠地发送到指定的 Topic<br>Topic 的每个 Partition 收到 Producer 发送的数据后，都需要向 Producer 发送ACK（ACKnowledge 确认收到）。<br>如果 Producer 收到 ACK，就会进行下一轮的发送，否则重新发送数据。</p>
+<h4 id="ACK时机"><a href="#ACK时机" class="headerlink" title="ACK时机"></a>ACK时机</h4><p>部分 Follower 与 Leader 同步完成，Leader 发送 ACK<br>全部 Follower 与 Leader 同步完成，Leader 发送 ACK。<br>ISR(部分)<br>    关键词<br>        AR : Assigned Replicas 用来标识副本的全集<br>        OSR ：out -sync Replicas 离开同步队列的副本<br>        ISR ：in -sync Replicas 加入同步队列的副本<br>        ISR = Leader + 没有落后太多的副本;<br>        AR = OSR+ ISR。<br>    Leader维护了一个动态的 in-sync replica set（ISR 和 Leader 保持同步的 Follower 集合）<br>    当 ISR 集合中的 Follower 完成数据的同步之后，Leader 就会给 Follower 发送 ACK。<br>    如果 Follower 长时间未向 Leader 同步数据，则该 Follower 将被踢出 ISR 集合，判断标准：<br>        超过10秒钟没有同步数据<br>            replica.lag.time.max.ms=10000<br>        主副节点差4000条数据<br>            rerplica.lag.max.messages=4000<br>Leader 发生故障后，就会从 ISR 中选举出新的 Leader。<br>    kafka采用一种降级措施来处理：<br>    选举第一个恢复的node作为leader提供服务，以它的数据为基准，这个措施被称为脏leader选举</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/11/26/kafka%E5%88%86%E4%BA%AB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-kafka" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/25/kafka/">kafka</a>
+    </h1>
+  
+
+        
+        <a href="/2021/11/25/kafka/" class="archive-article-date">
+  	<time datetime="2021-11-25T09:38:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果在短时间内有大量的请求，所以就有了消息中间件</p>
+<p>作用：解耦，数据削峰，可扩展性强</p>
+<p>观察者模式，发布订阅模式</p>
+<p>生产者消费者模式 解耦生产者消费者，消息中间件，</p>
+<p>通知下游，</p>
+<p>拉取消息，通过长链接拉取消息  左边发消息，右边收到了，实时获取到数据</p>
+<p>做缓冲区的作用，</p>
+<p>消费者生产者</p>
+<p>数据单元</p>
+<p>解耦的思想，点对点</p>
+<p>消息具有独立性</p>
+<p>谁订阅推送给谁</p>
+<p>处理消费者在网站中所有的动作流数据</p>
+<p>broke–kafka集群物理节点的名称</p>
+<p>topic–kafka这一张表就是一个主题 table   将来根据业务的不同创建不同的主题，创建流程：创建主题 ，然后选择分区</p>
+<p>partition 一般情况下一个主题有多个分区，整体无序，分区内部有序</p>
+<p>segment–段</p>
+<p>partition是为了数据的读写</p>
+<p>replication是为了数据备份，没有读取功能</p>
+<p>partition相当于leader</p>
+<p>replication相当于follower</p>
+<p>follower用ISR判断</p>
+<p>producer 数据的生产者，蒋昌盛的数据存放到对应的topic</p>
+<p>生产者难在三个规则，怎么保证满足三条消息中的莫一条</p>
+<p>消费者组 一组共享一个topic的偏移量，不同的组可以消费相同的哦topic，防止重复读取，</p>
+<p>offset–一个消息只能被一个组消费一次，消费组进度就是偏移量</p>
+<p>每一种组和都会有一个topic，特殊情况下可适当的调整offset的位置，消费者的数据不会被马上删除</p>
+<p>zookeeper，帮助进行选举，存储元数据的信息</p>
+<p>选kafka要基于Scala版本</p>
+<p>之后要基于kafka答环境了</p>
+<p>log 在kafka里边是数据的意思</p>
+<p>数据是继续的 上个数据的最后一条，稀疏索引</p>
+<p>数据存在log里边</p>
+<p>ack机制保证生产者发送的信息可以到达partition</p>
+<p>AR：全部的备份</p>
+<p>ISR：在同步队列，与主备节点关紧密</p>
+<p>OSR：离开同步队列，</p>
+<p>ACK机制  ，客户端带一个唯一新歌东西</p>
+<p>生产者到partition的数据安全是ack确认的到十三</p>
+<p>十二条一下的绝对不会出问题</p>
+<p>高水位线</p>
+<p>hdfs存储在三个节点上 </p>
+<p>partition—–DataNode</p>
+<p>分布式发布订阅消息系统</p>
+<p>通过什么理论知识想到消息队列的东西</p>
+<p>通过异步通信原理和消息系统原理租出kafka</p>
+<p>kafka等价与rabbitmq</p>
+<p>观察者模式是一种概念</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/11/25/kafka/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Redis和ElasticSearch" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/25/Redis%E5%92%8CElasticSearch/">Redis和ElasticSearch</a>
+    </h1>
+  
+
+        
+        <a href="/2021/11/25/Redis%E5%92%8CElasticSearch/" class="archive-article-date">
+  	<time datetime="2021-11-25T03:24:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>save 默认保存在命令执行的位置</p>
+<p>bgsave    </p>
+<p>aof 数据太大，重启redis时间不可控，玩消消乐</p>
+<p>哨兵 主观下线，客观下线，选举流程</p>
+<p>主节点炉管显现</p>
+<p><img src="../images/Redis%E5%92%8CElasticSearch/image-20211125173321357.png" alt="image-20211125173321357"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/11/25/Redis%E5%92%8CElasticSearch/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-电商日志分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/23/%E7%94%B5%E5%95%86%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/">电商日志分析</a>
+    </h1>
+  
+
+        
+        <a href="/2021/11/23/%E7%94%B5%E5%95%86%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2021-11-23T01:21:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><p>jdbc-env</p>
+<p>创建</p>
+<p>使用kpi进行区分</p>
+<p>获取不同事件的转化类</p>
+<p>批量处理key</p>
+<p>默认批量大小</p>
+<p>判断数据是否达到批处理的阈值</p>
+<p>最后一批的数据刷出去</p>
+<p>执行map中最后一批sql</p>
+<p>进行强转</p>
+<p>map存了两个数据（-1，active_user）</p>
+<p>获取活跃用户的数量</p>
+<p>时间维度的ID</p>
+<p>构建一个维度key，</p>
+<p>Hashmap和Linkhashmap：linkhashmap有序</p>
+<p>获取连接</p>
+<p>用户维度</p>
+<p>构建维度–时间–平台–浏览器</p>
+<p>写出</p>
+<p>实际增加的数据量</p>
+<p>稍等一下</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/11/23/%E7%94%B5%E5%95%86%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Flume,Ganglia,Sqoop,Datax" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/19/Flume,Ganglia,Sqoop,Datax/">Flume,Ganglia,Sqoop,Datax</a>
+    </h1>
+  
+
+        
+        <a href="/2021/11/19/Flume,Ganglia,Sqoop,Datax/" class="archive-article-date">
+  	<time datetime="2021-11-19T01:11:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Flume的案例；Flume监控之interceptor；Ganglia的介绍和安装使用；sqoop的系统架构；sqoop的数据导入导出流程；sqoop的安装和练习；DataX的介绍及系统架构；DataX的安装；DataX的案例</p>
+<p>1、Flume的案例 -08<del>13<br>2、Ganglia的介绍及安装 -01</del>02<br>3、sqoop的数据迁移介绍 -01<br>4、sqoop的系统架构 -02<br>5、sqoop的数据导入导出流程 -03<br>6、sqoop的安装及练习 -04<br>7、DataX的软件介绍 -01<br>8、DataX的软件架构及核心模块 -02<del>03<br>9、DataX的安装及案例 -04</del>05</p>
+        
+          <a class="article-more-a" href="/2021/11/19/Flume,Ganglia,Sqoop,Datax/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/11/19/Flume,Ganglia,Sqoop,Datax/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据仓库Data-Warehouse和Flume" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -526,468 +1016,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/11/09/MR%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-MapReduce" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/08/MapReduce/">MapReduce</a>
-    </h1>
-  
-
-        
-        <a href="/2021/11/08/MapReduce/" class="archive-article-date">
-  	<time datetime="2021-11-08T02:02:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Split-Map、KvBuffer-Partitioner-Sort-Spill-Merge、Fetch-Merge-Reduce-Output、WordCount、MR1.x系统架构、MR2.x的Yarn的架构、Yarn集群、MapReduce的Job、Map和Reduce泛型参数、WordCount实现与Jar包执行、源码分析Split切片</p>
-<p>1、计算流程Split-Map<br>2、HelloWord - 哈利波特WordCount<br>3、MR1.x和MR2,x系统架构<br>4、MR2.x的Yarn的作用<br>5、MR2.x的Yarn的架构与集群搭建<br>6、第一个MapReduce的Job实现<br>7、Map和Reduce泛型参数<br>8、WordCount实现与Jar包执行<br>9、射雕英雄传字词统计与Jar包执行<br>10、源码分析之前置讲解<br>11、源码分析之Split切片相关</p>
-        
-          <a class="article-more-a" href="/2021/11/08/MapReduce/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/11/08/MapReduce/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hadoop高可用架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/06/Hadoop%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/">Hadoop高可用架构</a>
-    </h1>
-  
-
-        
-        <a href="/2021/11/06/Hadoop%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2021-11-06T01:40:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Active NameNode；Standy NameNode；DataNodeJouralNode；Failover Controller节点；2.x中ZK的作用；QJM工作流程；ZKFC工作流程；防止NameNode脑裂；防止多NameNode发出指令；Federation机制；2.x的高可用集群搭建；JavaAPI访问Hadoop；IDEA插件访问Hadoop；3.x的Erasure Encoding、多NameNode节点；服务端口；DN数据自平衡等新特性</p>
-<p>1、2.x架构的各个组件介绍<br>2、2.x中ZK的作用<br>3、2.x中QJM工作流程<br>4、2.x中ZKFC工作流程<br>5、2.x中脑裂和多NameNode发指令问题解决方案<br>6、2.x中联邦机制的使用<br>7、2.x的HA环境搭建<br>8、Java API和IDEA访问Hadoop集群<br>9、Hadoop3.x新特性<br>10、扑克牌问题</p>
-<p>MapReduce设计理念；数据块Block；切片Split；Map任务；环形数据缓冲区；分区Partition；排序Sort；溢写split；合并Merge；组合器Combiner；拉取Fetch；归并Reduce；写出Output</p>
-<p>1、入门介绍  - 01<br>2、MapReduce计算流程推导 - 02<br>3、MR计算流程图解Map阶段 - 03<br>4、计算流程Reduce介绍 - 04<br>5、MR流程总结 - 05</p>
-        
-          <a class="article-more-a" href="/2021/11/06/Hadoop%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/11/06/Hadoop%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hadoop读写流程与2-X架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/">Hadoop读写流程与2.X架构</a>
-    </h1>
-  
-
-        
-        <a href="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2021-11-05T01:33:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>fsimage与edits日志；HDFS安全模式；HDFS权限管理；机架遥感策略；HDFS写数据流程（宏观和微观）；HDFS读数据流程；HDFS1.x版本问题以及2.x版本改进</p>
-<p>1、fsimage和edits如何确保NameNode的数据安全<br>2、HDFS安全模式<br>3、HDFS权限管理<br>4、HDFS机架遥感策略<br>5、HDFS写数据流程<br>6、HDFS读数据流程<br>7、HDFS1.x版本的问题<br>8、HDFS2.x架构升级</p>
-        
-          <a class="article-more-a" href="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hadoop入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/">hadoop入门</a>
-    </h1>
-  
-
-        
-        <a href="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/" class="archive-article-date">
-  	<time datetime="2021-11-04T02:33:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Hadoop介绍；DFS系统架构(Block)；<br>Hadoop3完全分布式集群搭建；<br>Hadoop集群命令；文件数据类型；NameNode；DataNode；SecondaryNameNode</p>
-<p>1、Hadoop介绍与发展<br>2、分布式文件系统架构（Block切片）<br>3、Hadoop3完全分布式集群搭建<br>4、Hadoop集群相关命令<br>5、文件的数据类型<br>6、NameNode<br>7、数据节点DataNode<br>8、SecondaryNameNode入门</p>
-        
-          <a class="article-more-a" href="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-10-28-11-03总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/03/10-28-11-03%E6%80%BB%E7%BB%93/">10.28--11.03总结</a>
-    </h1>
-  
-
-        
-        <a href="/2021/11/03/10-28-11-03%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2021-11-03T06:07:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="计算机硬件"><a href="#计算机硬件" class="headerlink" title="计算机硬件"></a>计算机硬件</h2><p>冯 诺依曼体系结构<br>计算机处理的数据和指令一律用二进制数表示<br>顺序执行程序<br>计算机硬件由运算器、控制器、存储器、输入设备和输出设备五大部分组成</p>
-<p>硬盘按照存储介质的不同可以分为如下两种:<br>机械硬盘</p>
-<p>固态硬盘（Solid State Disk, SSD）<br>固态硬盘通过闪存颗粒（固态电子存储芯片阵列）来存储数据</p>
-<p>读写速度的区别<br>固态硬盘的读取速度普遍可以达到400M/s，写入速度也可以达到130M/s以上，<br>其读写速度是普通机械硬盘的3-5倍。</p>
-<h2 id="计算机网络知识-07-08-10"><a href="#计算机网络知识-07-08-10" class="headerlink" title="计算机网络知识 - 07/08/10"></a>计算机网络知识 - 07/08/10</h2><p>IP地址IPADDR<br>IP地址是一种逻辑地址，用来标识网络中一个个主机<br>IP地址=网络地址+主机地址<br>IP地址是一个 4 * 8bit（1字节）由 0/1 组成的数字串（IP4协议）</p>
-<p>子网掩码NETMASK<br>子网掩码只有一个功能，就是将IP地址划分为网络地址和主机地址两部分。<br>子网掩码用来判断任意两台计算机的IP地址是否在同一个子网中的根据</p>
-<p>默认网关GATEWAY<br>连接两个不同的网络的设备都可以叫网关设备；网关的作用就是实现两个网络之间进行通讯与<br>控制。<br>网关地址就是网关设备的IP地址</p>
-<p>域名服务器DNS<br>DNS是域名服务器，用来解析域名的（域名和IP之间的解析）。</p>
-<p>host-onboy(主机模式)<br>在某些特殊的网络调试环境中，要求将真实环境和虚拟环境隔离开，这时你就可采用host-<br>onboy模式。</p>
-<p>bridged(桥接模式)<br>VMWare虚拟出来的操作系统就像是局域网中的一台独立的主机，它可以访问网内任何一台机<br>器。<br>使用桥接模式的虚拟系统和宿主机器的关系，就像连接在同一个Hub上的两台电脑。</p>
-<p>NAT(网络地址转换模式)<br>使用NAT模式，就是让虚拟系统借助NAT(网络地址转换)功能，通过宿主机器所在的网络来访<br>问公网。</p>
-<p>应用软件<br>就是为了实现某些业务功能<br>应用软件要基于对应的系统软件<br>不同的操作系统要安装不同的软件</p>
-<p>系统软件<br>就是为了和硬件打交道<br>屏蔽应用软件与硬件的差异</p>
-<h2 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h2><p>防火墙</p>
-<p>快照与克隆</p>
-<p>万事万物皆文件</p>
-<p>Linux的文件操作</p>
-<p>读取文件信息</p>
-<p>VI和VIM编辑器</p>
-<p>编辑模式<br>        编辑模式中，每一个按键都有其他的功能<br>输入模式<br>        每一个按键按下什么，就像文本中数据输入什么<br>末行（命令行）模式<br>        我们可以直接在VI中输入特定的命令</p>
-<p>文件大小</p>
-<p>文件压缩</p>
-<p>加密算法</p>
-<p>​    不可逆加密算法</p>
-<p>​    对称加密算法</p>
-<p>​    非对称加密算法</p>
-<p>日期与时间</p>
-<p>日期自动同步</p>
-<p>用户-组-权限</p>
-<p>管道与重定向</p>
-<p>​    将前面命令的结果作为参数传递给后面的命令: &gt;替换  &gt;&gt; 追加</p>
-<p> /dev/null 2&gt;&amp;1</p>
-<p>Linux的系统进程<br>            进程信息</p>
-<p>top<br>        当前服务器内存使用率</p>
-<p>jobs -l</p>
-<p>杀死进程</p>
-<p>RPM安装</p>
-<p>YUM安装</p>
-<p>安装Mysql数据库</p>
-<p>Linux的三剑客</p>
-<p>普通剑客</p>
-<p>cut<br>用指定的规则来切分文本</p>
-<p>sort<br>对文本中的行进行排序</p>
-<p>wc<br>统计单词的数量</p>
-<p>剑客1号：grep</p>
-<p>可以对文本进行搜索<br>同时搜索多个文件<br>从文档中查询指定的数据</p>
-<p>剑客2号：sed<br>sed 是Stream Editor（字符流编辑器）的缩写，简称流编辑器<br>Sed软件从文件或管道中读取一行，处理一行，输出一行；再读取一行，再处理一行，再输出一<br>行…</p>
-<p>剑客3号：awk</p>
-<p>它不是一个剑客，它是一门语言</p>
-<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><p>Nginx是一款轻量级的Web 服务器/反向代理服务器</p>
-<p>占有内存少，并发能力强</p>
-<p>官方测试nginx能够支撑5万并发链接，并且CPU、内存等资源消耗却非常低，运行非常稳定。</p>
-<p>使用场景</p>
-<p>高并发通常是指通过设计保证系统能够同时并行处理很多请求。通俗来讲，高并发是指在同一个时<br>间点，有很多用户同时的访问同一 API 接口或者 Url 地址。它经常会发生在有大活跃用户量，用户<br>高聚集的业务场景中。</p>
-<p>负载均衡(load Balance )<br>将请求/数据【均匀】分摊到多个操作单元上执行，负载均衡的关键在于【均匀】</p>
-<p>正向代理<br>代理人明确买家的目标是谁，代理人帮我们去联系目标</p>
-<p>反向代理<br>客户只需要发送请求到代理服务器，代理服务器会将请求转发给内部的服务器去处理，处理完毕之后会将结果返回给客户<br>但整个过程中客户和实际处理服务器是不会直接建立连接的</p>
-<p> 解编安启</p>
-<p>make &amp;&amp; make install</p>
-<p>开启Ngxin</p>
-<p>nginx -s reload</p>
-<p>安装目录</p>
-<p>配置文件</p>
-<p>Nginx负载均衡</p>
-<p>集群搭建</p>
-<p>负载策略</p>
-<p>请求轮询<br>依次转发给配置的服务器</p>
-<p>增加权重</p>
-<p>使用服务器权重，还可以进一步影响nginx负载均衡算法，谁的权重越大，分发到的请求就越多。</p>
-<p> 最少连接数</p>
-<p>在连接负载最少的情况下，nginx会尽量避免将过多的请求分发给繁忙的应用程序服务器，而是将新请求分发给不太繁忙的服务器，避免服务器过载。</p>
-<p>IpHash</p>
-<p>确保来自同一客户端的请求将始终定向到同一台服务器，除非此服务器不可用</p>
-<p>.资源静态化</p>
-<p>虚拟主机</p>
-<p>分类<br>1、基于域名的虚拟主机，通过域名来区分虚拟主机<br>2、基于端口的虚拟主机，通过端口来区分虚拟主机</p>
-<p>Session一致性</p>
-<h2 id="高并发与一致性算法"><a href="#高并发与一致性算法" class="headerlink" title="高并发与一致性算法"></a>高并发与一致性算法</h2><p>单节点计算<br>单点故障<br>性能瓶颈<br>    IO的瓶颈<br>    内存</p>
-<h3 id="磁盘阵列"><a href="#磁盘阵列" class="headerlink" title="磁盘阵列"></a>磁盘阵列</h3><p>将数据存放在多块磁盘肯定能解决IO瓶颈的问题</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/11/03/10-28-11-03%E6%80%BB%E7%BB%93/">展开全文 >></a>
         </p>
       
 
