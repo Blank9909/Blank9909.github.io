@@ -6,15 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2021 | Blank博客</title>
+  <title>车流量项目 | Blank博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Blank博客">
-<meta property="og:url" content="http://example.com/archives/2021/page/3/index.html">
+  <meta name="description" content="笔记04-卡扣车速统计05获取参数topN 排序并take（topN） 封装成对象存放到list 将topNlist的数据存放到数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="车流量项目">
+<meta property="og:url" content="http://example.com/2021/12/18/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/index.html">
 <meta property="og:site_name" content="Blank博客">
+<meta property="og:description" content="笔记04-卡扣车速统计05获取参数topN 排序并take（topN） 封装成对象存放到list 将topNlist的数据存放到数据库">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2021/12/18/images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218103512409.png">
+<meta property="og:image" content="http://example.com/2021/12/18/images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218103932270.png">
+<meta property="og:image" content="http://example.com/2021/12/18/images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218104829197.png">
+<meta property="og:image" content="http://example.com/2021/12/18/images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218112144244.png">
+<meta property="og:image" content="http://example.com/2021/12/18/images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218151908987.png">
+<meta property="article:published_time" content="2021-12-18T02:32:24.000Z">
+<meta property="article:modified_time" content="2021-12-18T07:19:11.108Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/12/18/images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218103512409.png">
   
     <link rel="alternative" href="/atom.xml" title="Blank博客" type="application/atom+xml">
   
@@ -166,37 +176,91 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-车流量项目" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      车流量项目
+    </h1>
+  
+
+        
+        <a href="/2021/12/18/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/" class="archive-article-date">
+  	<time datetime="2021-12-18T02:32:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-12-18</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h2 id="04-卡扣车速统计"><a href="#04-卡扣车速统计" class="headerlink" title="04-卡扣车速统计"></a>04-卡扣车速统计</h2><p>05获取参数topN 排序并take（topN） 封装成对象存放到list 将topNlist的数据存放到数据库</p>
+<span id="more"></span>
+
+<p>对车流量排序取出前N，然后存放到数据库</p>
+<p>所有的数据都在累加器里边，获取累加器的值，将数据插入进去</p>
+<p>统计累加器里边所有的数据（正常，不正常），然后存放到数据库</p>
+<p>将topN卡扣的车流量详情存储放到数据库</p>
+<p>1.计算卡扣和车流量的状态</p>
+<p>2.计算卡扣车流量的topN</p>
+<p>3.将topN对应的车流量存放到数据库</p>
+<h2 id="05-卡扣车速统计"><a href="#05-卡扣车速统计" class="headerlink" title="05-卡扣车速统计"></a>05-卡扣车速统计</h2><p><img src="../images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218103512409.png" alt="image-20211218103512409"></p>
+<p>便利迭代器,计算每个区间的车辆总数</p>
+<p>key–？样例类</p>
+<p><img src="../images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218103932270.png" alt="image-20211218103932270"></p>
+<p>case class speed </p>
+<p><img src="../images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218104829197.png" alt="image-20211218104829197"></p>
+<p>序列化框架性能对比 <img src="../images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218112144244.png" alt="image-20211218112144244"></p>
+<p>实现kyr点开，进行查询</p>
+<p>时间查询</p>
+<p>区域02，车牌</p>
+<p>进行优化</p>
+<p>假设任何的卡都是10分钟车程 ，若同一个车牌在一分钟内同时出现在两个卡扣集市有问题的。</p>
+<p>车辆跟踪</p>
+<p>进行结合一下，</p>
+<p><img src="../images/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/image-20211218151908987.png" alt="image-20211218151908987"></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/WAlipay.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/11/01/Nginx%E4%B8%8E%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2021-11-01T01:08:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/11/01/Nginx%E4%B8%8E%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95/">Nginx与一致性算法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -209,363 +273,116 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2021/12/18/%E8%BD%A6%E6%B5%81%E9%87%8F%E9%A1%B9%E7%9B%AE/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/29/Shell/" class="archive-article-date">
-  	<time datetime="2021-10-29T01:10:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-29</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/12/10/kafka-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">kafka</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/29/Shell/">Shell</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#04-%E5%8D%A1%E6%89%A3%E8%BD%A6%E9%80%9F%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">04-卡扣车速统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#05-%E5%8D%A1%E6%89%A3%E8%BD%A6%E9%80%9F%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.2.</span> <span class="toc-text">05-卡扣车速统计</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/28/Linux-03/" class="archive-article-date">
-  	<time datetime="2021-10-28T00:25:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/28/Linux-03/">Linux-03</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/27/%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%83%E5%B1%82%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2021-10-27T12:04:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/27/%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%83%E5%B1%82%E6%9E%B6%E6%9E%84/">网络的七层架构</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/26/rpc%E5%88%86%E4%BA%AB/" class="archive-article-date">
-  	<time datetime="2021-10-26T00:27:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-26</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/26/rpc%E5%88%86%E4%BA%AB/">rpc分享</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/25/Linux/" class="archive-article-date">
-  	<time datetime="2021-10-25T01:48:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/25/Linux/">Linux</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/23/Gateway%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/" class="archive-article-date">
-  	<time datetime="2021-10-23T01:31:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/23/Gateway%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/">Gateway服务网关</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java//" class="article-tag-list-link color5">java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/java第三阶段//" class="article-tag-list-link color4">java第三阶段</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/22/Zuul%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/" class="archive-article-date">
-  	<time datetime="2021-10-22T06:18:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/22/Zuul%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/">Zuul服务网关</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java//" class="article-tag-list-link color5">java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/java第三阶段//" class="article-tag-list-link color4">java第三阶段</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/22/Sentinel%E6%9C%8D%E5%8A%A1%E5%93%A8%E5%85%B5/" class="archive-article-date">
-  	<time datetime="2021-10-22T01:15:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/22/Sentinel%E6%9C%8D%E5%8A%A1%E5%93%A8%E5%85%B5/">Sentinel服务哨兵</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java//" class="article-tag-list-link color5">java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/java第三阶段//" class="article-tag-list-link color4">java第三阶段</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/22/%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9D%A2%E8%AF%95/" class="archive-article-date">
-  	<time datetime="2021-10-22T00:44:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/22/%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9D%A2%E8%AF%95/">大数据面试01</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/BigData//" class="article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2021/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2021/">1</a><a class="page-number" href="/archives/2021/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/2021/page/4/">4</a><a class="extend next" rel="next" href="/archives/2021/page/4/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -589,8 +406,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
