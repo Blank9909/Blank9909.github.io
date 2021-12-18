@@ -15,19 +15,19 @@
 <meta property="og:site_name" content="Blank博客">
 <meta property="og:description" content="Hadoop介绍；DFS系统架构(Block)；Hadoop3完全分布式集群搭建；Hadoop集群命令；文件数据类型；NameNode；DataNode；SecondaryNameNode 1、Hadoop介绍与发展2、分布式文件系统架构（Block切片）3、Hadoop3完全分布式集群搭建4、Hadoop集群相关命令5、文件的数据类型6、NameNode7、数据节点DataNode8、Secon">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/06-HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/07-Block%E7%9A%84%E7%AE%A1%E7%90%86.jpg">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/08-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%86%E7%B1%BB.jpg">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/09-%E8%8A%82%E7%82%B9%E7%9A%84%E5%88%86%E7%B1%BB.jpg">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/10-NameNode.jpg">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/11-DataNode.jpg">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/13-HDFS%E6%9D%82%E9%A1%B9.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/06-HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/07-Block%E7%9A%84%E7%AE%A1%E7%90%86.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/08-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%86%E7%B1%BB.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/09-%E8%8A%82%E7%82%B9%E7%9A%84%E5%88%86%E7%B1%BB.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/10-NameNode.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/11-DataNode.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/13-HDFS%E6%9D%82%E9%A1%B9.jpg">
 <meta property="article:published_time" content="2021-11-04T02:33:03.000Z">
 <meta property="article:modified_time" content="2021-11-05T00:44:54.846Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/11/04/images/hadoop%E5%85%A5%E9%97%A8/06-HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg">
+<meta name="twitter:image" content="http://example.com/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/06-HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Blank博客" type="application/atom+xml">
   
@@ -207,14 +207,14 @@
 <p>这些被切分的时候是否会对最终的结果产生影响</p>
 <p>只要有任意一个块丢失，整个数据文件损坏，肯定需要对数据进行备份，读取效率，恢复 效率。默认情况下，每个数据有3个副本（总共三分数据），本分的数据不能存放到同一个节点，备份的数目不能超过集群节点的数量，副本的数量是可以动态修改的</p>
 <p>FS File System<br>文件系统是基于硬盘之上的一个文件管理的工具<br>我们用户操作文件系统可以和硬盘进行解耦<br>DFS Distributed File System:<br>分布式文件系统<br>将我们的数据存放在多台电脑上存储<br>分布式文件系统有很多,<br>HDFS是mapreduce计算的基础<br>2.1. 文件切分思想<br>文件存放在一个磁盘上效率肯定是低的<br>读取效率低<br>如果文件特别大会超出单机的存储范围<br>字节数组<br>文件在磁盘真实存储文件的抽象概念<br>数组可以进行拆分和组装，源文件不会受到影响<br>切分数据<br>对字节数组进行切分<br>拼接数据<br>按照数组的偏移量将数据连接到一起,将字节数组链接到一起<br>偏移量<br>当前数据在数组中的相对位置，你可以理解为 下标<br>数组都有对应的索引(下标),可以快速的定位数据<br>数据存储的原理：<br>不管文件的的大小，所有的文件都是由字节数组构成<br>如果我们要切分文件,就是将一个字节数组分成多份<br>我们将切分后的数据拼接到一起，数据可以继续使用<br>我们需要根据数据的偏移量将他们重新拼接到一起<br>2.2. Block拆分标准<br>拆分的数据块需要等大<br>数据计算的时候简化问题的复杂度<br>进行分布式算法设计的时候，数据不统一，算法很难设计<br>数据拉取的时候时间相对一致<br>通过偏移量就知道这个块的位置<br>相同文件，分成的数据块大小应该相等<br>数据块 Block<br>数据被切分后的一个整体称之为块<br>在H1默认大小为64M,在H2及其以后默认大小为128M<br>同一个文件中，每个数据块大小要一致除了最后一个节点外<br>不同文件中，块的大小可以不一致<br>文件大小不同可以设置不同的块的数量<br>真实情况下，会根据文件大小和集群节点的数量综合考虑块的大小<br>数据块的个数 =Ceil（ 文件大小 / 每个块的大小）<br>注意事项<br>HDFS中一旦文件被存储，数据不允许被修改<br>修改会影响偏移量<br>修改会导致数据倾斜<br>修改数据会导致蝴蝶效益<br>但是可以被追加，但是不推荐<br>追加设置需要手动打开<br>一般HDFS存储的都是历史数据。所以 将来Hadoop的mr都用来进行离线数据的处理<br>块的大小一旦文件上传之后就不允许被修改<br>128m -512M<br>如果数据文件的切割点128M整好是一个单词的中间部分，切分数据如何保证数据的完整性？<br>2.3. Block数据安全<br>肯定要对存储数据做备份<br>备份的数据肯定不能存放在一个节点上<br>使用数据的时候可以就近获取数据<br>所以备份的数量要小于等于节点的数量<br>每个数据块会有3个副本，相同副本是不会存放在同一个节点上<br>副本的数量可以变更<br>可能近期的数据被分析的可能性跟大，副本数可以多设置几个<br>后期数据很少被分析，可以减少副本数<br>2.4. Block的管理效率<br>需要专门给节点进行分工<br>存储 DataNode<br>记录 NameNode<br>日志 secondaryNameNode<br>2.5. HDFS的特点<br>优点<br>a)高容错性<br>i.保存多个副本，且提供容错机制。<br>ii.副本丢失或宕机自动恢复。默认存3份。<br>b)运行在廉价的机器上（商用机）<br>i.通过副本提高可靠性<br>ii.提供了容错和恢复机制<br>c)适合批处理<br>i.移动计算而非数据<br>ii.数据位置暴露给计算框架。NameNode上有位置<br>d)适合大数据的处理<br>i.TB，甚至PB级数据<br>ii.百万规模以上的文件数量<br>iii.10K+节点规模<br>e)流式数据访问<br>i.一次写入，多次读取，高吞吐量，所以可以同时处理大量数据<br>缺点<br>a)不擅长低延迟数据访问<br>比如毫秒级<br>b)不擅长小文件的分区<br>i.占用NameNode大量内存<br>ii.磁盘寻道时间超过读取时间<br>c)不擅长并发写入，文件随机修改<br>i.一个文件只能有一个写入者<br>ii.仅支持append,也就是添加（有组件实现删等）</p>
-<p><img src="../images/hadoop%E5%85%A5%E9%97%A8/06-HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg" alt="06-HDFS文件系统架构"></p>
-<p><img src="../images/hadoop%E5%85%A5%E9%97%A8/07-Block%E7%9A%84%E7%AE%A1%E7%90%86.jpg" alt="07-Block的管理"></p>
-<p><img src="../images/hadoop%E5%85%A5%E9%97%A8/08-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%86%E7%B1%BB.jpg" alt="08-数据的分类"></p>
-<h3 id="Hadoop3完全分布式集群搭建-18-19"><a href="#Hadoop3完全分布式集群搭建-18-19" class="headerlink" title="Hadoop3完全分布式集群搭建   - 18/19"></a>Hadoop3完全分布式集群搭建   - 18/19</h3><h3 id="Hadoop集群架构与NameNode-21-22"><a href="#Hadoop集群架构与NameNode-21-22" class="headerlink" title="Hadoop集群架构与NameNode    21/22"></a>Hadoop集群架构与NameNode    21/22</h3><h3 id="数据节点DataNode-23"><a href="#数据节点DataNode-23" class="headerlink" title="数据节点DataNode 23"></a>数据节点DataNode 23</h3><p><img src="../images/hadoop%E5%85%A5%E9%97%A8/09-%E8%8A%82%E7%82%B9%E7%9A%84%E5%88%86%E7%B1%BB.jpg" alt="09-节点的分类"></p>
-<p><img src="../images/hadoop%E5%85%A5%E9%97%A8/10-NameNode.jpg" alt="10-NameNode"></p>
-<p><img src="../images/hadoop%E5%85%A5%E9%97%A8/11-DataNode.jpg" alt="11-DataNode"></p>
-<p><img src="../images/hadoop%E5%85%A5%E9%97%A8/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg" alt="12-SecondaryNameNode工作流程"></p>
-<p><img src="../images/hadoop%E5%85%A5%E9%97%A8/13-HDFS%E6%9D%82%E9%A1%B9.jpg" alt="13-HDFS杂项"></p>
+<p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/06-HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg" alt="06-HDFS文件系统架构"></p>
+<p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/07-Block%E7%9A%84%E7%AE%A1%E7%90%86.jpg" alt="07-Block的管理"></p>
+<p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/08-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%86%E7%B1%BB.jpg" alt="08-数据的分类"></p>
+<h3 id="Hadoop3完全分布式集群搭建-18-19"><a href="#Hadoop3完全分布式集群搭建-18-19" class="headerlink" title="Hadoop3完全分布式集群搭建   - 18/19"></a>Hadoop3完全分布式集群搭建   - 18/19</h3><h3 id="Hadoop集群架构与NameNode-21-22"><a href="#Hadoop集群架构与NameNode-21-22" class="headerlink" title="Hadoop集群架构与NameNode    21/22"></a>Hadoop集群架构与NameNode    21/22</h3><h3 id="数据节点DataNode-23"><a href="#数据节点DataNode-23" class="headerlink" title="数据节点DataNode 23"></a>数据节点DataNode 23</h3><p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/09-%E8%8A%82%E7%82%B9%E7%9A%84%E5%88%86%E7%B1%BB.jpg" alt="09-节点的分类"></p>
+<p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/10-NameNode.jpg" alt="10-NameNode"></p>
+<p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/11-DataNode.jpg" alt="11-DataNode"></p>
+<p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg" alt="12-SecondaryNameNode工作流程"></p>
+<p><img src="/2021/11/04/hadoop%E5%85%A5%E9%97%A8/images/hadoop%E5%85%A5%E9%97%A8/13-HDFS%E6%9D%82%E9%A1%B9.jpg" alt="13-HDFS杂项"></p>
 <p>最后一条日志，到最后一条日志</p>
 <p>日志会进行总结</p>
 <p>看一下最后的情况</p>

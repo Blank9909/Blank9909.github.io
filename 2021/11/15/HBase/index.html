@@ -15,22 +15,22 @@
 <meta property="og:site_name" content="Blank博客">
 <meta property="og:description" content="Hbase的shell访问方式；Java对Hbase的访问；hbase的系统架构；Hbase0.96版本前后数据定位的方式；Hbase的读写流程；Hbase写入数据的刷写、合并、切分机制 1、Hbase的shell访问方式 -10122、Hbase的Java访问方式 -13-153、Hbase的系统架构 -16234、Hbase0.96前后数据定位方式 -24255、Hbase读写数据的流程 -2">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/03-HBase%E7%9A%84%E6%9E%B6%E6%9E%84.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/04-HBase%E7%9A%84%E8%AF%BB%E5%86%99%E5%85%AC%E5%85%B1%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/05-HBase%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/06-%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/07-HBase%E5%88%B7%E5%86%99.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/08-HBase%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/09-HBase%E7%9A%84%E5%88%87%E5%88%86.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/01-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/10-Hbase%E7%9A%84%E8%A1%A8%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/11-HBase%E5%A4%9A%E8%A1%A8%E8%AE%BE%E8%AE%A1.jpg">
-<meta property="og:image" content="http://example.com/2021/11/15/images/HBase/12-HBase%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/03-HBase%E7%9A%84%E6%9E%B6%E6%9E%84.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/04-HBase%E7%9A%84%E8%AF%BB%E5%86%99%E5%85%AC%E5%85%B1%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/05-HBase%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/06-%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/07-HBase%E5%88%B7%E5%86%99.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/08-HBase%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/09-HBase%E7%9A%84%E5%88%87%E5%88%86.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/01-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/10-Hbase%E7%9A%84%E8%A1%A8%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/11-HBase%E5%A4%9A%E8%A1%A8%E8%AE%BE%E8%AE%A1.jpg">
+<meta property="og:image" content="http://example.com/2021/11/15/HBase/images/HBase/12-HBase%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9.jpg">
 <meta property="article:published_time" content="2021-11-15T08:01:52.000Z">
 <meta property="article:modified_time" content="2021-11-16T01:13:54.948Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/11/15/images/HBase/03-HBase%E7%9A%84%E6%9E%B6%E6%9E%84.jpg">
+<meta name="twitter:image" content="http://example.com/2021/11/15/HBase/images/HBase/03-HBase%E7%9A%84%E6%9E%B6%E6%9E%84.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Blank博客" type="application/atom+xml">
   
@@ -208,17 +208,17 @@
 <p>1、Hbase的设计原则 -36<del>37<br>2、Hbase的设计案例 -38</del>42<br>3、Hbase的表优化策略 -43<del>46<br>4、Hbase与MapReduce的相互读写 -47</del>48<br>5、Hbase与Hive的整合 -49<br>6、protobuf的安装与应用 -50<del>51<br>7、Phoenix的安装与应用<br>8、OLAP与OLTP的介绍与操作 -1</del>3</p>
 <span id="more"></span>
 
-<h2 id="重点知识点"><a href="#重点知识点" class="headerlink" title="重点知识点"></a>重点知识点</h2><h3 id="Hbase的系统架构-16-23"><a href="#Hbase的系统架构-16-23" class="headerlink" title="Hbase的系统架构 -16~23"></a>Hbase的系统架构 -16~23</h3><p><img src="../images/HBase/03-HBase%E7%9A%84%E6%9E%B6%E6%9E%84.jpg" alt="03-HBase的架构"></p>
-<h3 id="Hbase读写数据的流程-26-27"><a href="#Hbase读写数据的流程-26-27" class="headerlink" title="Hbase读写数据的流程 -26~27"></a>Hbase读写数据的流程 -26~27</h3><p><img src="../images/HBase/04-HBase%E7%9A%84%E8%AF%BB%E5%86%99%E5%85%AC%E5%85%B1%E6%B5%81%E7%A8%8B.jpg" alt="04-HBase的读写公共流程"></p>
-<p><img src="../images/HBase/05-HBase%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg" alt="05-HBase读取数据流程"></p>
-<p><img src="../images/HBase/06-%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg" alt="06-写入数据的流程"></p>
-<p><img src="../images/HBase/07-HBase%E5%88%B7%E5%86%99.jpg" alt="07-HBase刷写"></p>
-<p><img src="../images/HBase/08-HBase%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6.jpg" alt="08-HBase的文件合并"></p>
-<p><img src="../images/HBase/09-HBase%E7%9A%84%E5%88%87%E5%88%86.jpg" alt="09-HBase的切分"></p>
-<h3 id="Hbase的设计原则-36-37"><a href="#Hbase的设计原则-36-37" class="headerlink" title="Hbase的设计原则 -36~37"></a>Hbase的设计原则 -36~37</h3><p><img src="../images/HBase/01-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F.jpg" alt="01-数据的处理方式"></p>
-<p><img src="../images/HBase/10-Hbase%E7%9A%84%E8%A1%A8%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1.jpg" alt="10-Hbase的表结构设计"></p>
-<h3 id="Hbase的表优化策略-43-46"><a href="#Hbase的表优化策略-43-46" class="headerlink" title="Hbase的表优化策略 -43~46"></a>Hbase的表优化策略 -43~46</h3><p><img src="../images/HBase/11-HBase%E5%A4%9A%E8%A1%A8%E8%AE%BE%E8%AE%A1.jpg" alt="11-HBase多表设计"></p>
-<h3 id="OLAP与OLTP的介绍与操作-1-3"><a href="#OLAP与OLTP的介绍与操作-1-3" class="headerlink" title="OLAP与OLTP的介绍与操作 -1~3"></a>OLAP与OLTP的介绍与操作 -1~3</h3><p><img src="../images/HBase/12-HBase%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9.jpg" alt="12-HBase数据压缩"></p>
+<h2 id="重点知识点"><a href="#重点知识点" class="headerlink" title="重点知识点"></a>重点知识点</h2><h3 id="Hbase的系统架构-16-23"><a href="#Hbase的系统架构-16-23" class="headerlink" title="Hbase的系统架构 -16~23"></a>Hbase的系统架构 -16~23</h3><p><img src="/2021/11/15/HBase/images/HBase/03-HBase%E7%9A%84%E6%9E%B6%E6%9E%84.jpg" alt="03-HBase的架构"></p>
+<h3 id="Hbase读写数据的流程-26-27"><a href="#Hbase读写数据的流程-26-27" class="headerlink" title="Hbase读写数据的流程 -26~27"></a>Hbase读写数据的流程 -26~27</h3><p><img src="/2021/11/15/HBase/images/HBase/04-HBase%E7%9A%84%E8%AF%BB%E5%86%99%E5%85%AC%E5%85%B1%E6%B5%81%E7%A8%8B.jpg" alt="04-HBase的读写公共流程"></p>
+<p><img src="/2021/11/15/HBase/images/HBase/05-HBase%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg" alt="05-HBase读取数据流程"></p>
+<p><img src="/2021/11/15/HBase/images/HBase/06-%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg" alt="06-写入数据的流程"></p>
+<p><img src="/2021/11/15/HBase/images/HBase/07-HBase%E5%88%B7%E5%86%99.jpg" alt="07-HBase刷写"></p>
+<p><img src="/2021/11/15/HBase/images/HBase/08-HBase%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6.jpg" alt="08-HBase的文件合并"></p>
+<p><img src="/2021/11/15/HBase/images/HBase/09-HBase%E7%9A%84%E5%88%87%E5%88%86.jpg" alt="09-HBase的切分"></p>
+<h3 id="Hbase的设计原则-36-37"><a href="#Hbase的设计原则-36-37" class="headerlink" title="Hbase的设计原则 -36~37"></a>Hbase的设计原则 -36~37</h3><p><img src="/2021/11/15/HBase/images/HBase/01-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F.jpg" alt="01-数据的处理方式"></p>
+<p><img src="/2021/11/15/HBase/images/HBase/10-Hbase%E7%9A%84%E8%A1%A8%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1.jpg" alt="10-Hbase的表结构设计"></p>
+<h3 id="Hbase的表优化策略-43-46"><a href="#Hbase的表优化策略-43-46" class="headerlink" title="Hbase的表优化策略 -43~46"></a>Hbase的表优化策略 -43~46</h3><p><img src="/2021/11/15/HBase/images/HBase/11-HBase%E5%A4%9A%E8%A1%A8%E8%AE%BE%E8%AE%A1.jpg" alt="11-HBase多表设计"></p>
+<h3 id="OLAP与OLTP的介绍与操作-1-3"><a href="#OLAP与OLTP的介绍与操作-1-3" class="headerlink" title="OLAP与OLTP的介绍与操作 -1~3"></a>OLAP与OLTP的介绍与操作 -1~3</h3><p><img src="/2021/11/15/HBase/images/HBase/12-HBase%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9.jpg" alt="12-HBase数据压缩"></p>
 <h2 id="知识点了解"><a href="#知识点了解" class="headerlink" title="知识点了解"></a>知识点了解</h2><h3 id="Hbase的shell访问方式-10-12"><a href="#Hbase的shell访问方式-10-12" class="headerlink" title="Hbase的shell访问方式 -10~12"></a>Hbase的shell访问方式 -10~12</h3><h3 id="Hbase的Java访问方式-13-15"><a href="#Hbase的Java访问方式-13-15" class="headerlink" title="Hbase的Java访问方式 -13-15"></a>Hbase的Java访问方式 -13-15</h3><h3 id="Hbase0-96前后数据定位方式-24-25"><a href="#Hbase0-96前后数据定位方式-24-25" class="headerlink" title="Hbase0.96前后数据定位方式 -24~25"></a>Hbase0.96前后数据定位方式 -24~25</h3><h3 id="Hbase写入数据的刷写、合并、切分机制-28-35"><a href="#Hbase写入数据的刷写、合并、切分机制-28-35" class="headerlink" title="Hbase写入数据的刷写、合并、切分机制 -28~35"></a>Hbase写入数据的刷写、合并、切分机制 -28~35</h3><h3 id="Hbase的设计案例-38-42"><a href="#Hbase的设计案例-38-42" class="headerlink" title="Hbase的设计案例 -38~42"></a>Hbase的设计案例 -38~42</h3><h3 id="Hbase与MapReduce的相互读写-47-48"><a href="#Hbase与MapReduce的相互读写-47-48" class="headerlink" title="Hbase与MapReduce的相互读写 -47~48"></a>Hbase与MapReduce的相互读写 -47~48</h3><h3 id="Hbase与Hive的整合-49"><a href="#Hbase与Hive的整合-49" class="headerlink" title="Hbase与Hive的整合 -49"></a>Hbase与Hive的整合 -49</h3><h3 id="protobuf的安装与应用-50-51"><a href="#protobuf的安装与应用-50-51" class="headerlink" title="protobuf的安装与应用 -50~51"></a>protobuf的安装与应用 -50~51</h3><h3 id="Phoenix的安装与应用"><a href="#Phoenix的安装与应用" class="headerlink" title="Phoenix的安装与应用"></a>Phoenix的安装与应用</h3><h2 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h2><h3 id="掌握Hbase的系统架构"><a href="#掌握Hbase的系统架构" class="headerlink" title="掌握Hbase的系统架构"></a>掌握Hbase的系统架构</h3><h3 id="掌握Hbase的读写流程"><a href="#掌握Hbase的读写流程" class="headerlink" title="掌握Hbase的读写流程"></a>掌握Hbase的读写流程</h3><h3 id="掌握Hbase的设计原则"><a href="#掌握Hbase的设计原则" class="headerlink" title="掌握Hbase的设计原则"></a>掌握Hbase的设计原则</h3><h3 id="掌握OLAP与OLTP"><a href="#掌握OLAP与OLTP" class="headerlink" title="掌握OLAP与OLTP"></a>掌握OLAP与OLTP</h3>
       
 

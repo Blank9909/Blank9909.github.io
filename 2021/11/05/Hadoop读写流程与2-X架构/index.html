@@ -15,18 +15,18 @@
 <meta property="og:site_name" content="Blank博客">
 <meta property="og:description" content="fsimage与edits日志；HDFS安全模式；HDFS权限管理；机架遥感策略；HDFS写数据流程（宏观和微观）；HDFS读数据流程；HDFS1.x版本问题以及2.x版本改进 1、fsimage和edits如何确保NameNode的数据安全2、HDFS安全模式3、HDFS权限管理4、HDFS机架遥感策略5、HDFS写数据流程6、HDFS读数据流程7、HDFS1.x版本的问题8、HDFS2.x架构">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/11-Secondary%20NameNode.jpg">
-<meta property="og:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/13-HDFS%E6%9D%82%E9%A1%B9.jpg">
-<meta property="og:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/14-HDFS%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/15-HDFS%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/16-Hadoop1.x%E7%9A%84%E5%9B%B0%E5%A2%83.jpg">
-<meta property="og:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/17-Hadoop2.x%E6%9E%B6%E6%9E%84.jpg">
+<meta property="og:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/11-Secondary%20NameNode.jpg">
+<meta property="og:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/13-HDFS%E6%9D%82%E9%A1%B9.jpg">
+<meta property="og:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/14-HDFS%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/15-HDFS%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/16-Hadoop1.x%E7%9A%84%E5%9B%B0%E5%A2%83.jpg">
+<meta property="og:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/17-Hadoop2.x%E6%9E%B6%E6%9E%84.jpg">
 <meta property="article:published_time" content="2021-11-05T01:33:27.000Z">
 <meta property="article:modified_time" content="2021-11-05T07:31:29.385Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/11/05/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/11-Secondary%20NameNode.jpg">
+<meta name="twitter:image" content="http://example.com/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/11-Secondary%20NameNode.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Blank博客" type="application/atom+xml">
   
@@ -203,13 +203,13 @@
 <span id="more"></span>
 
 <h2 id="重点知识点"><a href="#重点知识点" class="headerlink" title="重点知识点"></a>重点知识点</h2><h3 id="fsimage和edits如何确保NameNode的数据安全-26-27"><a href="#fsimage和edits如何确保NameNode的数据安全-26-27" class="headerlink" title="fsimage和edits如何确保NameNode的数据安全 - 26/27"></a>fsimage和edits如何确保NameNode的数据安全 - 26/27</h3><p>访问的时候生成日志</p>
-<p><img src="../images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/11-Secondary%20NameNode.jpg" alt="11-Secondary NameNode"></p>
-<p><img src="../images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg" alt="12-SecondaryNameNode工作流程"></p>
-<h3 id="HDFS写数据流程-31-34"><a href="#HDFS写数据流程-31-34" class="headerlink" title="HDFS写数据流程   - 31~34"></a>HDFS写数据流程   - 31~34</h3><p><img src="../images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/13-HDFS%E6%9D%82%E9%A1%B9.jpg" alt="13-HDFS杂项"></p>
-<p><img src="../images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/14-HDFS%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg" alt="14-HDFS写入数据的流程"></p>
-<h3 id="HDFS读数据流程-35"><a href="#HDFS读数据流程-35" class="headerlink" title="HDFS读数据流程 - 35"></a>HDFS读数据流程 - 35</h3><p><img src="../images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/15-HDFS%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg" alt="15-HDFS读取数据流程"></p>
-<h3 id="HDFS1-x版本的问题-36"><a href="#HDFS1-x版本的问题-36" class="headerlink" title="HDFS1.x版本的问题 - 36"></a>HDFS1.x版本的问题 - 36</h3><p><img src="../images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/16-Hadoop1.x%E7%9A%84%E5%9B%B0%E5%A2%83.jpg" alt="16-Hadoop1.x的困境"></p>
-<h3 id="HDFS2-x架构升级-37"><a href="#HDFS2-x架构升级-37" class="headerlink" title="HDFS2.x架构升级 - 37"></a>HDFS2.x架构升级 - 37</h3><p><img src="../images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/17-Hadoop2.x%E6%9E%B6%E6%9E%84.jpg" alt="17-Hadoop2.x架构"></p>
+<p><img src="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/11-Secondary%20NameNode.jpg" alt="11-Secondary NameNode"></p>
+<p><img src="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/12-SecondaryNameNode%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.jpg" alt="12-SecondaryNameNode工作流程"></p>
+<h3 id="HDFS写数据流程-31-34"><a href="#HDFS写数据流程-31-34" class="headerlink" title="HDFS写数据流程   - 31~34"></a>HDFS写数据流程   - 31~34</h3><p><img src="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/13-HDFS%E6%9D%82%E9%A1%B9.jpg" alt="13-HDFS杂项"></p>
+<p><img src="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/14-HDFS%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B.jpg" alt="14-HDFS写入数据的流程"></p>
+<h3 id="HDFS读数据流程-35"><a href="#HDFS读数据流程-35" class="headerlink" title="HDFS读数据流程 - 35"></a>HDFS读数据流程 - 35</h3><p><img src="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/15-HDFS%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.jpg" alt="15-HDFS读取数据流程"></p>
+<h3 id="HDFS1-x版本的问题-36"><a href="#HDFS1-x版本的问题-36" class="headerlink" title="HDFS1.x版本的问题 - 36"></a>HDFS1.x版本的问题 - 36</h3><p><img src="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/16-Hadoop1.x%E7%9A%84%E5%9B%B0%E5%A2%83.jpg" alt="16-Hadoop1.x的困境"></p>
+<h3 id="HDFS2-x架构升级-37"><a href="#HDFS2-x架构升级-37" class="headerlink" title="HDFS2.x架构升级 - 37"></a>HDFS2.x架构升级 - 37</h3><p><img src="/2021/11/05/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/images/Hadoop%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E2-X%E6%9E%B6%E6%9E%84/17-Hadoop2.x%E6%9E%B6%E6%9E%84.jpg" alt="17-Hadoop2.x架构"></p>
 <h2 id="知识点了解"><a href="#知识点了解" class="headerlink" title="知识点了解"></a>知识点了解</h2><h3 id="HDFS安全模式-28"><a href="#HDFS安全模式-28" class="headerlink" title="HDFS安全模式 - 28"></a>HDFS安全模式 - 28</h3><h3 id="HDFS权限管理-29"><a href="#HDFS权限管理-29" class="headerlink" title="HDFS权限管理 - 29"></a>HDFS权限管理 - 29</h3><h3 id="HDFS机架遥感策略-30"><a href="#HDFS机架遥感策略-30" class="headerlink" title="HDFS机架遥感策略 - 30"></a>HDFS机架遥感策略 - 30</h3><h2 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h2><h3 id="掌握fsimage与edits合并流程"><a href="#掌握fsimage与edits合并流程" class="headerlink" title="掌握fsimage与edits合并流程"></a>掌握fsimage与edits合并流程</h3><h3 id="掌握HDFS写数据的宏微观流程"><a href="#掌握HDFS写数据的宏微观流程" class="headerlink" title="掌握HDFS写数据的宏微观流程"></a>掌握HDFS写数据的宏微观流程</h3><h3 id="掌握HDFS1-x的问题与2-x的改进"><a href="#掌握HDFS1-x的问题与2-x的改进" class="headerlink" title="掌握HDFS1.x的问题与2.x的改进"></a>掌握HDFS1.x的问题与2.x的改进</h3>
       
 

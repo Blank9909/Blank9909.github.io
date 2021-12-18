@@ -15,13 +15,13 @@
 <meta property="og:site_name" content="Blank博客">
 <meta property="og:description" content="PRC的介绍​        了解RPC之前先介绍一下IPC，即Inter-Process Communication进程间通信，指进程或者是线程之间传送数据和信号的一些技术和方法。本质是为了解决资源隔离的不同进程间互访资源问题。根据进程所处位置不同，进程间通信的方法包括两类： 本地过程调用；远程过程调用(RPC，Remote Procedure Call)：RPC是一种进程间通信方式。—它允许程">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/10/26/images/rpc%E5%88%86%E4%BA%AB/image-20211026113218474.png">
-<meta property="og:image" content="http://example.com/2021/10/26/images/rpc%E5%88%86%E4%BA%AB/image-20211026102707368.png">
+<meta property="og:image" content="http://example.com/2021/10/26/rpc%E5%88%86%E4%BA%AB/images/rpc%E5%88%86%E4%BA%AB/image-20211026113218474.png">
+<meta property="og:image" content="http://example.com/2021/10/26/rpc%E5%88%86%E4%BA%AB/images/rpc%E5%88%86%E4%BA%AB/image-20211026102707368.png">
 <meta property="article:published_time" content="2021-10-26T00:27:45.000Z">
 <meta property="article:modified_time" content="2021-10-27T10:45:00.919Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/10/26/images/rpc%E5%88%86%E4%BA%AB/image-20211026113218474.png">
+<meta name="twitter:image" content="http://example.com/2021/10/26/rpc%E5%88%86%E4%BA%AB/images/rpc%E5%88%86%E4%BA%AB/image-20211026113218474.png">
   
     <link rel="alternative" href="/atom.xml" title="Blank博客" type="application/atom+xml">
   
@@ -198,7 +198,7 @@
 <span id="more"></span>   
 
 <h2 id="什么是RPC"><a href="#什么是RPC" class="headerlink" title="什么是RPC"></a>什么是RPC</h2><p>他通过网络远程调用其他服务的协议。通俗的说就是，A通过打电话的方式让B帮忙办一件事，B办完事后将结果告知A。也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。比如在一台计算机中的A进程写了一个方法，那在以前如果在B进程中也要有这个方法，必须要在B进程中进行创建，但有了RPC后B只需要调用A进程的程序即可完成，这些进程可以是在同一台计算机上，也可能是在网络联通的不同计算机上。 在一个完整的RPC框架中存在的角  色以及整个远程调用的过程大致是以下。</p>
-<p><img src="../images/rpc%E5%88%86%E4%BA%AB/image-20211026113218474.png" alt="image-20211026113218474"></p>
+<p><img src="/2021/10/26/rpc%E5%88%86%E4%BA%AB/images/rpc%E5%88%86%E4%BA%AB/image-20211026113218474.png" alt="image-20211026113218474"></p>
 <ol start="0">
 <li>服务容器负责启动，加载，运行服务提供者。</li>
 <li>服务提供者在启动时，向注册中心注册自己提供的服务。</li>
@@ -223,7 +223,7 @@
 <li>同步调用 ：客户方等待调用执行完成并返回结果。  </li>
 <li>异步调用 ：客户方调用后不用等待执行结果返回，但依然可以通过回调通知等方式获取返回结果。若客户方不关心调用返回结果，则变成单向异步调用，单向调用不用返回结果。</li>
 </ol>
-<h2 id="RPC流程"><a href="#RPC流程" class="headerlink" title="RPC流程"></a>RPC流程</h2><p><img src="../images/rpc%E5%88%86%E4%BA%AB/image-20211026102707368.png" alt="image-20211026102707368"></p>
+<h2 id="RPC流程"><a href="#RPC流程" class="headerlink" title="RPC流程"></a>RPC流程</h2><p><img src="/2021/10/26/rpc%E5%88%86%E4%BA%AB/images/rpc%E5%88%86%E4%BA%AB/image-20211026102707368.png" alt="image-20211026102707368"></p>
 <p>首先，要解决通讯的问题，主要是通过在客户端和服务器之间建立TCP连接，远程过程调用的所有交换的数据都在这个连接里传输。连接可以是按需连接，调用结束后就断掉，也可以是长连接，多个远程过程调用共享同一个连接。<br>        第二，要解决寻址的问题，也就是说，A服务器上的应用怎么告诉底层的RPC框架，如何连接到B服务器（如主机或IP地址）以及特定的端口，方法的名称是什么，这样才能完成调用。<br>        第三，当A服务器上的应用发起远程过程调用时，方法的参数需要通过底层的网络协议如TCP传递到B服务器，由于网络协议是基于二进制的，内存中的参数的值要序列化成二进制的形式，也就是序列化（Serialize）或编组（marshal），通过寻址和传输将序列化的二进制发送给B服务器。<br>        第四，B服务器收到请求后，需要对参数进行反序列化（序列化的逆操作），恢复为内存中的表达方式，然后找到对应的方法（寻址的一部分）进行本地调用，然后得到返回值。<br>        第五，返回值还要发送回服务器A上的应用，也要经过序列化的方式发送，服务器A接到后，再反序列化，恢复为内存中的表达方式，交给A服务器上的应用</p>
 <h2 id="RPC协议"><a href="#RPC协议" class="headerlink" title="RPC协议"></a>RPC协议</h2><p>RPC是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。 所以RPC的实现可以通过不同的协议去实现比如可以使http、RMI等。RPC的核心并不在于使用什么协议。RPC的目的是让你在本地调用远程的方法，这个调用是透明的，你并不知道这个调用的方法是部署哪里。通过RPC能解耦服务，是服务耦合性降低。RPC的原理主要用到了动态代理模式，RPC是一个软件结构概念，是构建分布式应用的理论基础。就好比为啥你家可以用到发电厂发出来的电？是因为电是可以传输的。至于用铜线还是用铁丝还是其他种类的导线，也就是用http还是用其他协议的问题了。这个要看什么场景，对性能要求怎么样。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。</p>
 <h2 id="RPC采用的模式"><a href="#RPC采用的模式" class="headerlink" title="RPC采用的模式"></a>RPC采用的模式</h2><p>RPC采用客户机/服务器模式。（请求程序就是一个客户机，而服务提供程序就是一个服务器）。第一步，客户机调用进程发送一个调用信息到服务进程，然后等待应答信息。在服务器端，进程保持睡眠状态直到调用信息到达为止。当一个调用信息到达，服务器获得进程参数，计算结果，并且发送答复信息，然后等待下一个调用信息。最后，客户端调用进程接收到答复信息，获得进程结果后，继续执行，进行下一步。</p>

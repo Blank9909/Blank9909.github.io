@@ -15,18 +15,18 @@
 <meta property="og:site_name" content="Blank博客">
 <meta property="og:description" content="数据建模的定义；关系建模；维度建模；数仓的特点；数仓的分层；常见词介绍；ETL介绍；flume的介绍；flume各结构体各组件的作用；flume的安装 1、数据模型的定义 -042、关系建模 -053、维度建模 -06104、数据仓库的特点 -11135、数据仓库的分层 -14176、数据仓库常见词介绍 -18227、ETL介绍 -23~258、flume的意义9、flume的体系结构及各组件的作">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/04-%E6%A6%82%E5%BF%B5.jpg">
-<meta property="og:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1-16372246335611.jpg">
-<meta property="og:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1.jpg">
-<meta property="og:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-%E6%95%B0%E4%BB%93%E5%88%86%E5%B1%82.jpg">
-<meta property="og:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-Flume%E7%BB%84%E4%BB%B6.jpg">
-<meta property="og:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/01-Flume.jpg">
-<meta property="og:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-Flume%E4%BD%BF%E7%94%A8.jpg">
+<meta property="og:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/04-%E6%A6%82%E5%BF%B5.jpg">
+<meta property="og:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1-16372246335611.jpg">
+<meta property="og:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1.jpg">
+<meta property="og:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-%E6%95%B0%E4%BB%93%E5%88%86%E5%B1%82.jpg">
+<meta property="og:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-Flume%E7%BB%84%E4%BB%B6.jpg">
+<meta property="og:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/01-Flume.jpg">
+<meta property="og:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-Flume%E4%BD%BF%E7%94%A8.jpg">
 <meta property="article:published_time" content="2021-11-18T08:31:11.000Z">
 <meta property="article:modified_time" content="2021-11-18T08:37:55.909Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/11/18/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/04-%E6%A6%82%E5%BF%B5.jpg">
+<meta name="twitter:image" content="http://example.com/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/04-%E6%A6%82%E5%BF%B5.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Blank博客" type="application/atom+xml">
   
@@ -202,12 +202,12 @@
 <p>1、数据模型的定义 -04<br>2、关系建模 -05<br>3、维度建模 -06<del>10<br>4、数据仓库的特点 -11</del>13<br>5、数据仓库的分层 -14<del>17<br>6、数据仓库常见词介绍 -18</del>22<br>7、ETL介绍 -23~25<br>8、flume的意义<br>9、flume的体系结构及各组件的作用<br>10、flume的执行流程<br>11、flume的事务机制<br>12、flume的软件安装</p>
 <span id="more"></span>
 
-<h2 id="重点知识点"><a href="#重点知识点" class="headerlink" title="重点知识点"></a>重点知识点</h2><h3 id="数据模型的定义-04"><a href="#数据模型的定义-04" class="headerlink" title="数据模型的定义 -04"></a>数据模型的定义 -04</h3><p><img src="../images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/04-%E6%A6%82%E5%BF%B5.jpg" alt="04-概念"></p>
-<h3 id="关系建模-05"><a href="#关系建模-05" class="headerlink" title="关系建模 -05"></a>关系建模 -05</h3><p><img src="../images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1-16372246335611.jpg" alt="02-建模"></p>
-<h3 id="维度建模-06-10"><a href="#维度建模-06-10" class="headerlink" title="维度建模 -06~10"></a>维度建模 -06<img src="../images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1.jpg" alt="02-建模">~10</h3><h3 id="数据仓库的分层-14-17"><a href="#数据仓库的分层-14-17" class="headerlink" title="数据仓库的分层 -14~17"></a>数据仓库的分层 -14~17</h3><p><img src="../images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-%E6%95%B0%E4%BB%93%E5%88%86%E5%B1%82.jpg" alt="03-数仓分层"></p>
-<h3 id="flume的体系架构及各组件的作用"><a href="#flume的体系架构及各组件的作用" class="headerlink" title="flume的体系架构及各组件的作用"></a>flume的体系架构及各组件的作用</h3><p><img src="../images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-Flume%E7%BB%84%E4%BB%B6.jpg" alt="02-Flume组件"></p>
-<p><img src="../images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/01-Flume.jpg" alt="01-Flume"></p>
-<p><img src="../images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-Flume%E4%BD%BF%E7%94%A8.jpg" alt="03-Flume使用"></p>
+<h2 id="重点知识点"><a href="#重点知识点" class="headerlink" title="重点知识点"></a>重点知识点</h2><h3 id="数据模型的定义-04"><a href="#数据模型的定义-04" class="headerlink" title="数据模型的定义 -04"></a>数据模型的定义 -04</h3><p><img src="/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/04-%E6%A6%82%E5%BF%B5.jpg" alt="04-概念"></p>
+<h3 id="关系建模-05"><a href="#关系建模-05" class="headerlink" title="关系建模 -05"></a>关系建模 -05</h3><p><img src="/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1-16372246335611.jpg" alt="02-建模"></p>
+<h3 id="维度建模-06-10"><a href="#维度建模-06-10" class="headerlink" title="维度建模 -06~10"></a>维度建模 -06<img src="/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-%E5%BB%BA%E6%A8%A1.jpg" alt="02-建模">~10</h3><h3 id="数据仓库的分层-14-17"><a href="#数据仓库的分层-14-17" class="headerlink" title="数据仓库的分层 -14~17"></a>数据仓库的分层 -14~17</h3><p><img src="/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-%E6%95%B0%E4%BB%93%E5%88%86%E5%B1%82.jpg" alt="03-数仓分层"></p>
+<h3 id="flume的体系架构及各组件的作用"><a href="#flume的体系架构及各组件的作用" class="headerlink" title="flume的体系架构及各组件的作用"></a>flume的体系架构及各组件的作用</h3><p><img src="/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/02-Flume%E7%BB%84%E4%BB%B6.jpg" alt="02-Flume组件"></p>
+<p><img src="/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/01-Flume.jpg" alt="01-Flume"></p>
+<p><img src="/2021/11/18/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/images/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93Data-Warehouse%E5%92%8CFlume/03-Flume%E4%BD%BF%E7%94%A8.jpg" alt="03-Flume使用"></p>
 <h2 id="知识点了解"><a href="#知识点了解" class="headerlink" title="知识点了解"></a>知识点了解</h2><h3 id="数据仓库的特点-11-13"><a href="#数据仓库的特点-11-13" class="headerlink" title="数据仓库的特点 -11~13"></a>数据仓库的特点 -11~13</h3><h3 id="数据仓库常见词介绍-18-22"><a href="#数据仓库常见词介绍-18-22" class="headerlink" title="数据仓库常见词介绍 -18~22"></a>数据仓库常见词介绍 -18~22</h3><h3 id="ETL介绍-23-25"><a href="#ETL介绍-23-25" class="headerlink" title="ETL介绍 -23~25"></a>ETL介绍 -23~25</h3><h3 id="flume的意义"><a href="#flume的意义" class="headerlink" title="flume的意义"></a>flume的意义</h3><h3 id="flume的体系结构及各组件的作用"><a href="#flume的体系结构及各组件的作用" class="headerlink" title="flume的体系结构及各组件的作用"></a>flume的体系结构及各组件的作用</h3><h3 id="flume的执行流程"><a href="#flume的执行流程" class="headerlink" title="flume的执行流程"></a>flume的执行流程</h3><h3 id="flume的事务机制"><a href="#flume的事务机制" class="headerlink" title="flume的事务机制"></a>flume的事务机制</h3><h3 id="flume的软件安装"><a href="#flume的软件安装" class="headerlink" title="flume的软件安装"></a>flume的软件安装</h3><h2 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h2><h3 id="掌握数据模型的定义"><a href="#掌握数据模型的定义" class="headerlink" title="掌握数据模型的定义"></a>掌握数据模型的定义</h3><h3 id="掌握数据仓库分层的含义"><a href="#掌握数据仓库分层的含义" class="headerlink" title="掌握数据仓库分层的含义"></a>掌握数据仓库分层的含义</h3>
       
 
